@@ -40,6 +40,7 @@ func InitLabels(options []string) (string, string, error) {
 	return processLabel, mountLabel, nil
 }
 
+// GenLabels; 
 // DEPRECATED: The GenLabels function is only to be used during the transition to the official API.
 func GenLabels(options string) (string, string, error) {
 	return InitLabels(strings.Fields(options))
@@ -87,7 +88,7 @@ func SetFileLabel(path string, fileLabel string) error {
 	return nil
 }
 
-// Tell the kernel the label for all files to be created
+// SetFileCreateLabel; Tell the kernel the label for all files to be created
 func SetFileCreateLabel(fileLabel string) error {
 	if selinux.SelinuxEnabled() {
 		return selinux.Setfscreatecon(fileLabel)
@@ -95,7 +96,7 @@ func SetFileCreateLabel(fileLabel string) error {
 	return nil
 }
 
-// Change the label of path to the filelabel string.  If the relabel string
+// Relabel; Change the label of path to the filelabel string.  If the relabel string
 // is "z", relabel will change the MCS label to s0.  This will allow all
 // containers to share the content.  If the relabel string is a "Z" then
 // the MCS label should continue to be used.  SELinux will use this field

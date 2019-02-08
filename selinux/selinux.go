@@ -410,7 +410,7 @@ func CopyLevel(src, dest string) (string, error) {
 	return tcon.Get(), nil
 }
 
-// Prevent users from relabing system files
+// badPrefix; Prevent users from relabing system files
 func badPrefix(fpath string) error {
 	var badprefixes = []string{"/usr"}
 
@@ -422,7 +422,7 @@ func badPrefix(fpath string) error {
 	return nil
 }
 
-// Change the fpath file object to the SELinux label scon.
+// Chcon; Change the fpath file object to the SELinux label scon.
 // If the fpath is a directory and recurse is true Chcon will walk the
 // directory tree setting the label
 func Chcon(fpath string, scon string, recurse bool) error {

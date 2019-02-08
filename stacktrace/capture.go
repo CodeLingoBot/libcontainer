@@ -2,7 +2,7 @@ package stacktrace
 
 import "runtime"
 
-// Caputure captures a stacktrace for the current calling go program
+// Capture; Caputure captures a stacktrace for the current calling go program
 //
 // skip is the number of frames to skip
 func Capture(userSkip int) Stacktrace {

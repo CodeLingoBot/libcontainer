@@ -4,7 +4,7 @@ package configs
 
 import "fmt"
 
-// Gets the root uid for the process on host which could be non-zero
+// HostUID gets the root uid for the process on host which could be non-zero
 // when user namespaces are enabled.
 func (c Config) HostUID() (int, error) {
 	if c.Namespaces.Contains(NEWUSER) {
@@ -21,7 +21,7 @@ func (c Config) HostUID() (int, error) {
 	return 0, nil
 }
 
-// Gets the root uid for the process on host which could be non-zero
+// HostGID gets the root uid for the process on host which could be non-zero
 // when user namespaces are enabled.
 func (c Config) HostGID() (int, error) {
 	if c.Namespaces.Contains(NEWUSER) {
@@ -38,7 +38,7 @@ func (c Config) HostGID() (int, error) {
 	return 0, nil
 }
 
-// Utility function that gets a host ID for a container ID from user namespace map
+// hostIDFromMapping; Utility function that gets a host ID for a container ID from user namespace map
 // if that ID is present in the map.
 func (c Config) hostIDFromMapping(containerID int, uMap []IDMap) (int, bool) {
 	for _, m := range uMap {

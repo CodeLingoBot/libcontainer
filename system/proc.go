@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// look in /proc to find the process start time so that we can verify
+// GetProcessStartTime; look in /proc to find the process start time so that we can verify
 // that this pid has started after ourself
 func GetProcessStartTime(pid int) (string, error) {
 	data, err := ioutil.ReadFile(filepath.Join("/proc", strconv.Itoa(pid), "stat"))

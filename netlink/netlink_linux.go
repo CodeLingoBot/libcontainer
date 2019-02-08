@@ -399,7 +399,7 @@ func nonZeroTerminated(s string) []byte {
 	return []byte(s)
 }
 
-// Add a new network link of a specified type.
+// NetworkLinkAdd; Add a new network link of a specified type.
 // This is identical to running: ip link add $name type $linkType
 func NetworkLinkAdd(name string, linkType string) error {
 	if name == "" || linkType == "" {
@@ -431,7 +431,7 @@ func NetworkLinkAdd(name string, linkType string) error {
 	return s.HandleAck(wb.Seq)
 }
 
-// Delete a network link.
+// NetworkLinkDel; Delete a network link.
 // This is identical to running: ip link del $name
 func NetworkLinkDel(name string) error {
 	if name == "" {
@@ -462,7 +462,7 @@ func NetworkLinkDel(name string) error {
 	return s.HandleAck(wb.Seq)
 }
 
-// Bring up a particular network interface.
+// NetworkLinkUp; Bring up a particular network interface.
 // This is identical to running: ip link set dev $name up
 func NetworkLinkUp(iface *net.Interface) error {
 	s, err := getNetlinkSocket()
@@ -486,7 +486,7 @@ func NetworkLinkUp(iface *net.Interface) error {
 	return s.HandleAck(wb.Seq)
 }
 
-// Bring down a particular network interface.
+// NetworkLinkDown; Bring down a particular network interface.
 // This is identical to running: ip link set $name down
 func NetworkLinkDown(iface *net.Interface) error {
 	s, err := getNetlinkSocket()
@@ -510,7 +510,7 @@ func NetworkLinkDown(iface *net.Interface) error {
 	return s.HandleAck(wb.Seq)
 }
 
-// Set link layer address ie. MAC Address.
+// NetworkSetMacAddress; Set link layer address ie. MAC Address.
 // This is identical to running: ip link set dev $name address $macaddress
 func NetworkSetMacAddress(iface *net.Interface, macaddr string) error {
 	s, err := getNetlinkSocket()
@@ -550,7 +550,7 @@ func NetworkSetMacAddress(iface *net.Interface, macaddr string) error {
 	return s.HandleAck(wb.Seq)
 }
 
-// Set link Maximum Transmission Unit
+// NetworkSetMTU; Set link Maximum Transmission Unit
 // This is identical to running: ip link set dev $name mtu $MTU
 // bridge is a bitch here https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=292088
 // https://bugzilla.redhat.com/show_bug.cgi?id=697021
@@ -579,7 +579,7 @@ func NetworkSetMTU(iface *net.Interface, mtu int) error {
 	return s.HandleAck(wb.Seq)
 }
 
-// Set link queue length
+// NetworkSetTxQueueLen; Set link queue length
 // This is identical to running: ip link set dev $name txqueuelen $QLEN
 func NetworkSetTxQueueLen(iface *net.Interface, txQueueLen int) error {
 	s, err := getNetlinkSocket()
@@ -628,14 +628,14 @@ func networkMasterAction(iface *net.Interface, rtattr *RtAttr) error {
 	return s.HandleAck(wb.Seq)
 }
 
-// Add an interface to bridge.
+// NetworkSetMaster; Add an interface to bridge.
 // This is identical to running: ip link set $name master $master
 func NetworkSetMaster(iface, master *net.Interface) error {
 	data := uint32Attr(syscall.IFLA_MASTER, uint32(master.Index))
 	return networkMasterAction(iface, data)
 }
 
-// Remove an interface from the bridge
+// NetworkSetNoMaster; Remove an interface from the bridge
 // This is is identical to to running: ip link $name set nomaster
 func NetworkSetNoMaster(iface *net.Interface) error {
 	data := uint32Attr(syscall.IFLA_MASTER, 0)
@@ -662,14 +662,14 @@ func networkSetNsAction(iface *net.Interface, rtattr *RtAttr) error {
 	return s.HandleAck(wb.Seq)
 }
 
-// Move a particular network interface to a particular network namespace
+// NetworkSetNsPid; Move a particular network interface to a particular network namespace
 // specified by PID. This is identical to running: ip link set dev $name netns $pid
 func NetworkSetNsPid(iface *net.Interface, nspid int) error {
 	data := uint32Attr(syscall.IFLA_NET_NS_PID, uint32(nspid))
 	return networkSetNsAction(iface, data)
 }
 
-// Move a particular network interface to a particular mounted
+// NetworkSetNsFd; Move a particular network interface to a particular mounted
 // network namespace specified by file descriptor.
 // This is idential to running: ip link set dev $name netns $fd
 func NetworkSetNsFd(iface *net.Interface, fd int) error {
@@ -677,7 +677,7 @@ func NetworkSetNsFd(iface *net.Interface, fd int) error {
 	return networkSetNsAction(iface, data)
 }
 
-// Rename a particular interface to a different name
+// NetworkChangeName; Rename a particular interface to a different name
 // !!! Note that you can't rename an active interface. You need to bring it down before renaming it.
 // This is identical to running: ip link set dev ${oldName} name ${newName}
 func NetworkChangeName(iface *net.Interface, newName string) error {
@@ -708,7 +708,7 @@ func NetworkChangeName(iface *net.Interface, newName string) error {
 	return s.HandleAck(wb.Seq)
 }
 
-// Add a new VETH pair link on the host
+// NetworkCreateVethPair; Add a new VETH pair link on the host
 // This is identical to running: ip link add name $name type veth peer name $peername
 func NetworkCreateVethPair(name1, name2 string, txQueueLen int) error {
 	s, err := getNetlinkSocket()
@@ -759,7 +759,7 @@ func NetworkCreateVethPair(name1, name2 string, txQueueLen int) error {
 	return nil
 }
 
-// Add a new VLAN interface with masterDev as its upper device
+// NetworkLinkAddVlan; Add a new VLAN interface with masterDev as its upper device
 // This is identical to running:
 // ip link add name $name link $masterdev type vlan id $id
 func NetworkLinkAddVlan(masterDev, vlanDev string, vlanId uint16) error {
@@ -816,7 +816,7 @@ func (m MacVlanLink) Mode() uint32 {
 	return modeMap[m.mode]
 }
 
-// Add MAC VLAN network interface with masterDev as its upper device
+// networkLinkMacVlan; Add MAC VLAN network interface with masterDev as its upper device
 // This is identical to running:
 // ip link add name $name link $masterdev type macvlan mode $mode
 func networkLinkMacVlan(dev_type string, mcvln *MacVlanLink) error {
@@ -907,7 +907,7 @@ func networkLinkIpAction(action, flags int, ifa IfAddr) error {
 	return s.HandleAck(wb.Seq)
 }
 
-// Delete an IP address from an interface. This is identical to:
+// NetworkLinkDelIp; Delete an IP address from an interface. This is identical to:
 // ip addr del $ip/$ipNet dev $iface
 func NetworkLinkDelIp(iface *net.Interface, ip net.IP, ipNet *net.IPNet) error {
 	return networkLinkIpAction(
@@ -917,7 +917,7 @@ func NetworkLinkDelIp(iface *net.Interface, ip net.IP, ipNet *net.IPNet) error {
 	)
 }
 
-// Add an Ip address to an interface. This is identical to:
+// NetworkLinkAddIp; Add an Ip address to an interface. This is identical to:
 // ip addr add $ip/$ipNet dev $iface
 func NetworkLinkAddIp(iface *net.Interface, ip net.IP, ipNet *net.IPNet) error {
 	return networkLinkIpAction(
@@ -927,7 +927,7 @@ func NetworkLinkAddIp(iface *net.Interface, ip net.IP, ipNet *net.IPNet) error {
 	)
 }
 
-// Returns an array of IPNet for all the currently routed subnets on ipv4
+// NetworkGetRoutes returns an array of IPNet for all the currently routed subnets on ipv4
 // This is similar to the first column of "ip route" output
 func NetworkGetRoutes() ([]Route, error) {
 	s, err := getNetlinkSocket()
@@ -1019,7 +1019,7 @@ outer:
 	return res, nil
 }
 
-// Add a new route table entry.
+// AddRoute; Add a new route table entry.
 func AddRoute(destination, source, gateway, device string) error {
 	if destination == "" && source == "" && gateway == "" {
 		return fmt.Errorf("one of destination, source or gateway must not be blank")
@@ -1114,13 +1114,13 @@ func AddRoute(destination, source, gateway, device string) error {
 	return s.HandleAck(wb.Seq)
 }
 
-// Add a new default gateway. Identical to:
+// AddDefaultGw; Add a new default gateway. Identical to:
 // ip route add default via $ip
 func AddDefaultGw(ip, device string) error {
 	return AddRoute("", "", ip, device)
 }
 
-// THIS CODE DOES NOT COMMUNICATE WITH KERNEL VIA RTNETLINK INTERFACE
+// getIfSocket; CODE DOES NOT COMMUNICATE WITH KERNEL VIA RTNETLINK INTERFACE
 // IT IS HERE FOR BACKWARDS COMPATIBILITY WITH OLDER LINUX KERNELS
 // WHICH SHIP WITH OLDER NOT ENTIRELY FUNCTIONAL VERSION OF NETLINK
 func getIfSocket() (fd int, err error) {
@@ -1139,7 +1139,7 @@ func getIfSocket() (fd int, err error) {
 	return -1, err
 }
 
-// Create the actual bridge device.  This is more backward-compatible than
+// CreateBridge; the actual bridge device.  This is more backward-compatible than
 // netlink.NetworkLinkAdd and works on RHEL 6.
 func CreateBridge(name string, setMacAddr bool) error {
 	if len(name) >= IFNAMSIZ {
@@ -1165,7 +1165,7 @@ func CreateBridge(name string, setMacAddr bool) error {
 	return nil
 }
 
-// Delete the actual bridge device.
+// DeleteBridge; the actual bridge device.
 func DeleteBridge(name string) error {
 	s, err := getIfSocket()
 	if err != nil {
@@ -1214,13 +1214,13 @@ func ifIoctBridge(iface, master *net.Interface, op uintptr) error {
 	return nil
 }
 
-// Add a slave to a bridge device.  This is more backward-compatible than
+// AddToBridge; Add a slave to a bridge device.  This is more backward-compatible than
 // netlink.NetworkSetMaster and works on RHEL 6.
 func AddToBridge(iface, master *net.Interface) error {
 	return ifIoctBridge(iface, master, SIOC_BRADDIF)
 }
 
-// Detach a slave from a bridge device.  This is more backward-compatible than
+// DelFromBridge; Detach a slave from a bridge device.  This is more backward-compatible than
 // netlink.NetworkSetMaster and works on RHEL 6.
 func DelFromBridge(iface, master *net.Interface) error {
 	return ifIoctBridge(iface, master, SIOC_BRDELIF)

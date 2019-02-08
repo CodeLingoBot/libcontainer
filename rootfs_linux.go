@@ -252,7 +252,7 @@ func setupDevSymlinks(rootfs string) error {
 	return nil
 }
 
-// If stdin, stdout, and/or stderr are pointing to `/dev/null` in the parent's rootfs
+// reOpenDevNull; If stdin, stdout, and/or stderr are pointing to `/dev/null` in the parent's rootfs
 // this method will make them point to `/dev/null` in this container's rootfs.  This
 // needs to be called after we chroot/pivot into the container's rootfs so that any
 // symlinks are resolved locally.
@@ -280,7 +280,7 @@ func reOpenDevNull(rootfs string) error {
 	return nil
 }
 
-// Create the device nodes in the container.
+// createDevices; the device nodes in the container.
 func createDevices(config *configs.Config) error {
 	oldMask := syscall.Umask(0000)
 	for _, node := range config.Devices {
@@ -295,7 +295,7 @@ func createDevices(config *configs.Config) error {
 	return nil
 }
 
-// Creates the device node in the rootfs of the container.
+// createDeviceNode creates the device node in the rootfs of the container.
 func createDeviceNode(rootfs string, node *configs.Device, bind bool) error {
 	dest := filepath.Join(rootfs, node.Path)
 	if err := os.MkdirAll(filepath.Dir(dest), 0755); err != nil {

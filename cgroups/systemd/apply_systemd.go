@@ -449,7 +449,7 @@ func getUnitName(c *configs.Cgroup) string {
 	return fmt.Sprintf("%s-%s.scope", c.Parent, c.Name)
 }
 
-// Atm we can't use the systemd device support because of two missing things:
+// joinDevices; Atm we can't use the systemd device support because of two missing things:
 // * Support for wildcards to allow mknod on any device
 // * Support for wildcards to allow /dev/pts support
 //
@@ -516,7 +516,7 @@ func joinMemory(c *configs.Cgroup, pid int) error {
 	return nil
 }
 
-// systemd does not atm set up the cpuset controller, so we must manually
+// joinCpuset; systemd does not atm set up the cpuset controller, so we must manually
 // join it. Additionally that is a very finicky controller where each
 // level must have a full setup as the default for a new directory is "no cpus"
 func joinCpuset(c *configs.Cgroup, pid int) error {

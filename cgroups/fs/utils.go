@@ -16,7 +16,7 @@ var (
 	ErrNotValidFormat = errors.New("line is not a valid key value format")
 )
 
-// Saturates negative values at zero and returns a uint64.
+// parseUint saturates negative values at zero and returns a uint64.
 // Due to kernel bugs, some of the memory cgroup stats can be negative.
 func parseUint(s string, base, bitSize int) (uint64, error) {
 	value, err := strconv.ParseUint(s, base, bitSize)
@@ -36,7 +36,7 @@ func parseUint(s string, base, bitSize int) (uint64, error) {
 	return value, nil
 }
 
-// Parses a cgroup param and returns as name, value
+// getCgroupParamKeyValue parses a cgroup param and returns as name, value
 //  i.e. "io_service_bytes 1234" will return as io_service_bytes, 1234
 func getCgroupParamKeyValue(t string) (string, uint64, error) {
 	parts := strings.Fields(t)
@@ -53,7 +53,7 @@ func getCgroupParamKeyValue(t string) (string, uint64, error) {
 	}
 }
 
-// Gets a single uint64 value from the specified cgroup file.
+// getCgroupParamUint gets a single uint64 value from the specified cgroup file.
 func getCgroupParamUint(cgroupPath, cgroupFile string) (uint64, error) {
 	contents, err := ioutil.ReadFile(filepath.Join(cgroupPath, cgroupFile))
 	if err != nil {
@@ -63,7 +63,7 @@ func getCgroupParamUint(cgroupPath, cgroupFile string) (uint64, error) {
 	return parseUint(strings.TrimSpace(string(contents)), 10, 64)
 }
 
-// Gets a string value from the specified cgroup file
+// getCgroupParamString gets a string value from the specified cgroup file
 func getCgroupParamString(cgroupPath, cgroupFile string) (string, error) {
 	contents, err := ioutil.ReadFile(filepath.Join(cgroupPath, cgroupFile))
 	if err != nil {

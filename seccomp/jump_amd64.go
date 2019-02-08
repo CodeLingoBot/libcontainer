@@ -53,7 +53,7 @@ func jumpNotEqualTo(f *filter, v uint, jt sockFilter) {
 	*f = append(*f, scmpBpfStmt(syscall.BPF_LD+syscall.BPF_MEM, 1))
 }
 
-// this checks for a value inside a mask. The evalusation is equal to doing
+// jumpMaskEqualTo checks for a value inside a mask. The evalusation is equal to doing
 // CLONE_NEWUSER & syscallMask == CLONE_NEWUSER
 func jumpMaskEqualTo(f *filter, v uint, jt sockFilter) {
 	lo := uint32(uint64(v) % 0x100000000)

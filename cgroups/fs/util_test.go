@@ -28,7 +28,7 @@ type cgroupTestUtil struct {
 	t       *testing.T
 }
 
-// Creates a new test util for the specified subsystem
+// NewCgroupTestUtil creates a new test util for the specified subsystem
 func NewCgroupTestUtil(subsystem string, t *testing.T) *cgroupTestUtil {
 	d := &data{
 		c: &configs.Cgroup{},
@@ -55,7 +55,7 @@ func (c *cgroupTestUtil) cleanup() {
 	os.RemoveAll(c.tempDir)
 }
 
-// Write the specified contents on the mock of the specified cgroup files.
+// writeFileContents; the specified contents on the mock of the specified cgroup files.
 func (c *cgroupTestUtil) writeFileContents(fileContents map[string]string) {
 	for file, contents := range fileContents {
 		err := writeFile(c.CgroupPath, file, contents)

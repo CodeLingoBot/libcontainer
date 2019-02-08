@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-// Checks whether the expected capability is specified in the capabilities.
+// contains checks whether the expected capability is specified in the capabilities.
 func contains(expected string, values []string) bool {
 	for _, v := range values {
 		if v == expected {

@@ -54,7 +54,7 @@ type Manager struct {
 var cgroupRootLock sync.Mutex
 var cgroupRoot string
 
-// Gets the cgroupRoot.
+// getCgroupRoot gets the cgroupRoot.
 func getCgroupRoot() (string, error) {
 	cgroupRootLock.Lock()
 	defer cgroupRootLock.Unlock()

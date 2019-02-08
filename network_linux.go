@@ -39,7 +39,7 @@ func getStrategy(tpe string) (networkStrategy, error) {
 	return s, nil
 }
 
-// Returns the network statistics for the network interfaces represented by the NetworkRuntimeInfo.
+// getNetworkInterfaceStats returns the network statistics for the network interfaces represented by the NetworkRuntimeInfo.
 func getNetworkInterfaceStats(interfaceName string) (*NetworkInterface, error) {
 	out := &NetworkInterface{Name: interfaceName}
 	// This can happen if the network runtime information is missing - possible if the
@@ -75,7 +75,7 @@ func getNetworkInterfaceStats(interfaceName string) (*NetworkInterface, error) {
 	return out, nil
 }
 
-// Reads the specified statistics available under /sys/class/net/<EthInterface>/statistics
+// readSysfsNetworkStats; the specified statistics available under /sys/class/net/<EthInterface>/statistics
 func readSysfsNetworkStats(ethInterface, statsFile string) (uint64, error) {
 	data, err := ioutil.ReadFile(filepath.Join("/sys/class/net", ethInterface, "statistics", statsFile))
 	if err != nil {

@@ -258,7 +258,7 @@ func (c *linuxContainer) NotifyOOM() (<-chan struct{}, error) {
 	return notifyOnOOM(c.cgroupManager.GetPaths())
 }
 
-// XXX debug support, remove when debugging done.
+// addArgsFromEnv; XXX debug support, remove when debugging done.
 func addArgsFromEnv(evar string, args *[]string) {
 	if e := os.Getenv(evar); e != "" {
 		for _, f := range strings.Fields(e) {
@@ -634,7 +634,7 @@ func (c *linuxContainer) criuSwrk(process *Process, req *criurpc.CriuReq, opts *
 	return nil
 }
 
-// block any external network activity
+// lockNetwork; block any external network activity
 func lockNetwork(config *configs.Config) error {
 	for _, config := range config.Networks {
 		strategy, err := getStrategy(config.Type)
